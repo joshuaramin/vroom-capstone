@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum role {
+  admin
+  customer
+}
+
+enum scheduleStatus {
+  pending
+  accepted
+  rejected
+}
+
+model User {
+  userID    String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  profile   Profile?
+  role      role
+  verified  Boolean
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  User      Schedule[]
+  Product   Product[]
+  Sender    Message[]  @relation("sender")
+  Receiver  Message[]  @relation("receiver")
+  Logs      Logs[]
+  Otp       OTP[]
+  Orders    Orders[]
+}
+
+model Profile {
+  profileID String   @id @default(cuid())
+  firstname String
+  lastname  String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  User      User?    @relation(fields: [userID], references: [userID])
+  userID    String?  @unique
+}
+
+model Product {
+  productID    String   @id @default(cuid())
+  image        String
+  name         String
+  descriptions String
+  price        Float
+  quantity     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  User         User[]
+  Orders       Orders[]
+}
+
+model Message {
+  messageID  String   @id @default(cuid())
+  message    String
+  createdAt  DateTime @default(now())
+  sender     User?    @relation("sender", fields: [senderID], references: [userID])
+  senderID   String?
+  receiver   User?    @relation("receiver", fields: [receiverID], references: [userID])
+  receiverID String?
+}
+
+model Schedule {
+  scheduleID String         @id @default(cuid())
+  date       String
+  service    String
+  status     scheduleStatus
+  time       String
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @default(now())
+  User       User[]
+}
+
+model Logs {
+  logsID    String   @id @default(cuid())
+  title     String
+  createdAt DateTime @db.Time()
+  User      User?    @relation(fields: [userID], references: [userID])
+  userID    String?
+}
+
+model Orders {
+  orderID   String    @id @default(cuid())
+  orders    String
+  total     Float
+  payment   String
+  status    String
+  Product   Product[]
+  User      User[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+model OTP {
+  otpID     String   @id @default(cuid())
+  otp       String
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+  User      User?    @relation(fields: [userID], references: [userID])
+  userID    String?
+}
