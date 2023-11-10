@@ -11,9 +11,30 @@ const router = express.Router();
 router.post(
    "/createAdminAccount",
    tryCatch(async (req, res) => {
-      const { password, email, firstname, lastname, phone } = req.body;
+      const {
+         password,
+         email,
+         firstname,
+         lastname,
+         phone,
+         address1,
+         address2,
+         zipcode,
+         city,
+         province,
+      } = req.body;
 
-      if (!password || !email || !firstname || !lastname || !phone)
+      if (
+         !password ||
+         !email ||
+         !firstname ||
+         !lastname ||
+         !phone ||
+         !address1 ||
+         !zipcode ||
+         !city ||
+         !province
+      )
          throw new Error("Field should not be empty.");
 
       const pass = await bcryptjs.hash(password, 12);
@@ -29,6 +50,15 @@ router.post(
                   firstname: firstname,
                   lastname: lastname,
                   phone: phone,
+                  Address: {
+                     create: {
+                        address1,
+                        city,
+                        province,
+                        zipcode,
+                        address2,
+                     },
+                  },
                },
             },
          },
@@ -41,7 +71,17 @@ router.post(
 router.post(
    "/createCustomer",
    tryCatch(async (req, res) => {
-      const { password, email, firstname, lastname, phone, otps } = req.body;
+      const {
+         password,
+         email,
+         firstname,
+         lastname,
+         phone,
+         address1,
+         address2,
+         zipcode,
+         city,
+      } = req.body;
       const dates = new Date();
       const pass = await bcryptjs.hash(password, 12);
 
@@ -112,11 +152,19 @@ router.post(
                   firstname,
                   lastname,
                   phone,
+                  Address: {
+                     create: {
+                        address1,
+                        address2,
+                        city,
+                        province,
+                        zipcode,
+                     },
+                  },
                },
             },
          },
       });
-
 
       res.json(users);
    })
@@ -160,10 +208,14 @@ router.post(
 
       SENDMAIL(loginUser.email, "OTP Verification", `OTP MESSAGE: ${otps.otp}`);
 
-      const token = sign({ userID: loginUser.userID, role: loginUser.role }, "hello", {
-         algorithm: "HS256",
-         expiresIn: 60 * 60 * 24 * 7,
-      });
+      const token = sign(
+         { userID: loginUser.userID, role: loginUser.role },
+         "hello",
+         {
+            algorithm: "HS256",
+            expiresIn: 60 * 60 * 24 * 7,
+         }
+      );
 
       res.cookie("ecom_token", token);
 

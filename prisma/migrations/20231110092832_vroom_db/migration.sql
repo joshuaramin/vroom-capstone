@@ -18,6 +18,16 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Archive" (
+    "archieveID" TEXT NOT NULL,
+    "archive" BOOLEAN NOT NULL,
+    "userID" TEXT,
+    "orderID" TEXT,
+
+    CONSTRAINT "Archive_pkey" PRIMARY KEY ("archieveID")
+);
+
+-- CreateTable
 CREATE TABLE "Profile" (
     "profileID" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
@@ -28,6 +38,21 @@ CREATE TABLE "Profile" (
     "userID" TEXT,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("profileID")
+);
+
+-- CreateTable
+CREATE TABLE "Address" (
+    "addressID" TEXT NOT NULL,
+    "address1" TEXT NOT NULL,
+    "address2" TEXT,
+    "city" TEXT NOT NULL,
+    "province" TEXT NOT NULL,
+    "zipcode" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "profileID" TEXT,
+
+    CONSTRAINT "Address_pkey" PRIMARY KEY ("addressID")
 );
 
 -- CreateTable
@@ -59,7 +84,7 @@ CREATE TABLE "Message" (
 CREATE TABLE "Schedule" (
     "scheduleID" TEXT NOT NULL,
     "date" TEXT NOT NULL,
-    "service" TEXT NOT NULL,
+    "service" TEXT[],
     "status" "scheduleStatus" NOT NULL,
     "time" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -157,7 +182,16 @@ CREATE UNIQUE INDEX "_OrdersToUser_AB_unique" ON "_OrdersToUser"("A", "B");
 CREATE INDEX "_OrdersToUser_B_index" ON "_OrdersToUser"("B");
 
 -- AddForeignKey
+ALTER TABLE "Archive" ADD CONSTRAINT "Archive_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Archive" ADD CONSTRAINT "Archive_orderID_fkey" FOREIGN KEY ("orderID") REFERENCES "Orders"("orderID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Address" ADD CONSTRAINT "Address_profileID_fkey" FOREIGN KEY ("profileID") REFERENCES "Profile"("profileID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_senderID_fkey" FOREIGN KEY ("senderID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;

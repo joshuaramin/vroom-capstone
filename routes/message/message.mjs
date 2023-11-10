@@ -3,9 +3,9 @@ import MessageQuery from "./message.query.mjs";
 
 import express from "express";
 
-const app = express.Router();
+const router = express.Router();
 
-app.use("/t", MessageQuery);
-app.use("/t", MessageMutation);
+router.use("/t", MessageQuery);
+router.use("/t", MessageMutation);
 
-export default app;
+export default router;

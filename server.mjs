@@ -5,7 +5,8 @@ import cors from "cors";
 import { createServer } from "node:http";
 import { PrismaClient } from "@prisma/client";
 import { Server } from "socket.io";
-//
+
+import Archive from "./routes/archive/archive.mjs";
 import User from "./routes/user/user.mjs";
 import Product from "./routes/product/product.mjs";
 import Orders from "./routes/order/order.mjs";
@@ -45,6 +46,7 @@ app.use(Schedule);
 app.use(Orders);
 app.use(OTP);
 app.use(Logs);
+app.use(Archive);
 
 server.listen({ port: 3001 }, () => {
    console.log("Port is running at http://localhost:3001");

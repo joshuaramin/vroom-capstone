@@ -37,17 +37,42 @@ model User {
   Logs      Logs[]
   Otp       OTP[]
   Orders    Orders[]
+  Archive   Archive[]
+}
+
+model Archive {
+  archieveID String  @id @default(cuid())
+  archive    Boolean
+  User       User?   @relation(fields: [userID], references: [userID])
+  userID     String?
+  Orders     Orders? @relation(fields: [orderID], references: [orderID])
+  orderID    String?
 }
 
 model Profile {
-  profileID String   @id @default(cuid())
+  profileID String    @id @default(cuid())
   firstname String
   lastname  String
   phone     String
+  Address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  User      User?     @relation(fields: [userID], references: [userID])
+  userID    String?   @unique
+}
+
+model Address {
+  addressID String  @id @default(cuid())
+  address1  String
+  address2  String?
+  city      String
+  province  String
+  zipcode   String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  User      User?    @relation(fields: [userID], references: [userID])
-  userID    String?  @unique
+  Profile   Profile? @relation(fields: [profileID], references: [profileID])
+  profileID String?
 }
 
 model Product {
@@ -76,7 +101,7 @@ model Message {
 model Schedule {
   scheduleID String         @id @default(cuid())
   date       String
-  service    String
+  service    String[]
   status     scheduleStatus
   time       String
   createdAt  DateTime       @default(now())
@@ -100,6 +125,7 @@ model Orders {
   status    String
   Product   Product[]
   User      User[]
+  Archive   Archive[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
 }
