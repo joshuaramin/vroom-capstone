@@ -7,4 +7,4 @@ const router = express();
 router.use("/archive", ArchiveQuery);
 router.use("/archive", ArchiveMutation);
 
-export default rotuer;
+export default router;

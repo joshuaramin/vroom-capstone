@@ -6,7 +6,7 @@ import { SENDMAIL } from "../../helpers/sengrid.mjs";
 const router = express.Router();
 
 router.post(
-   "/createOTP",
+   "/createOTPLogin",
    tryCatch(async (req, res) => {
       const { email } = req.body;
       const otps = await prisma.oTP.create({

@@ -31,9 +31,10 @@ router.post(
    "/createProduct",
    uploadImage.single("file"),
    tryCatch(async (req, res) => {
-      const { name, quantity, price, descriptions, userID } = req.body;
+      const { name, quantity, price, descriptions, category, userID } =
+         req.body;
 
-      if (!name || !quantity || !price || !descriptions)
+      if ((!name || !quantity || !price || !descriptions, !category))
          throw new Error("Fields cannot be empty");
 
       const products = await prisma.product.create({
@@ -41,8 +42,20 @@ router.post(
             image: req.file.location,
             name,
             quantity: parseInt(quantity),
+            category,
             price: parseInt(price),
             descriptions,
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+         },
+      });
+
+      await prisma.logs.create({
+         data: {
+            title: "Added New Product",
             User: {
                connect: {
                   userID,
@@ -57,12 +70,22 @@ router.post(
 router.delete(
    "/deleteProduct/:id",
    tryCatch(async (req, res) => {
+      const { userID } = req.body;
       const prodcuts = await prisma.product.delete({
          where: {
             productID: req.params.id,
          },
       });
-
+      await prisma.logs.create({
+         data: {
+            title: "Deleted Product",
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+         },
+      });
       res.json(prodcuts);
    })
 );
@@ -70,16 +93,29 @@ router.delete(
 router.patch(
    "/updateProduct/:id",
    tryCatch(async (req, res) => {
-      const { name, descriptions, quantity, price } = req.body;
+      const { name, descriptions, quantity, price, category, userID } =
+         req.body;
       const products = await prisma.product.update({
          data: {
             name,
             price,
             descriptions,
+            category,
             quantity,
          },
          where: {
             productID: req.params.id,
+         },
+      });
+
+      await prisma.logs.create({
+         data: {
+            title: "Edited Product Details",
+            User: {
+               connect: {
+                  userID,
+               },
+            },
          },
       });
 
@@ -90,13 +126,24 @@ router.patch(
 router.put(
    "/updateProductQuantity/:id",
    tryCatch(async (req, res) => {
-      const { quantity } = req.body;
+      const { quantity, userID } = req.body;
       const products = await prisma.product.update({
          data: {
             quantity,
          },
          where: {
             productID: req.params.id,
+         },
+      });
+
+      await prisma.logs.create({
+         data: {
+            title: "Edited Inventory Details",
+            User: {
+               connect: {
+                  userID,
+               },
+            },
          },
       });
 

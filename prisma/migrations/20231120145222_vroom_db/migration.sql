@@ -33,6 +33,7 @@ CREATE TABLE "Profile" (
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
+    "shipping" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userID" TEXT,
@@ -41,18 +42,16 @@ CREATE TABLE "Profile" (
 );
 
 -- CreateTable
-CREATE TABLE "Address" (
-    "addressID" TEXT NOT NULL,
-    "address1" TEXT NOT NULL,
-    "address2" TEXT,
-    "city" TEXT NOT NULL,
-    "province" TEXT NOT NULL,
-    "zipcode" TEXT NOT NULL,
+CREATE TABLE "Services" (
+    "servicesID" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "services" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "profileID" TEXT,
+    "userUserID" TEXT,
 
-    CONSTRAINT "Address_pkey" PRIMARY KEY ("addressID")
+    CONSTRAINT "Services_pkey" PRIMARY KEY ("servicesID")
 );
 
 -- CreateTable
@@ -63,6 +62,7 @@ CREATE TABLE "Product" (
     "descriptions" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "category" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -97,7 +97,7 @@ CREATE TABLE "Schedule" (
 CREATE TABLE "Logs" (
     "logsID" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "createdAt" TIME NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userID" TEXT,
 
     CONSTRAINT "Logs_pkey" PRIMARY KEY ("logsID")
@@ -191,7 +191,7 @@ ALTER TABLE "Archive" ADD CONSTRAINT "Archive_orderID_fkey" FOREIGN KEY ("orderI
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Address" ADD CONSTRAINT "Address_profileID_fkey" FOREIGN KEY ("profileID") REFERENCES "Profile"("profileID") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Services" ADD CONSTRAINT "Services_userUserID_fkey" FOREIGN KEY ("userUserID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_senderID_fkey" FOREIGN KEY ("senderID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
