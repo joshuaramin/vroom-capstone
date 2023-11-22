@@ -12,6 +12,16 @@ router.get("/getUsers", async (req, res) => {
    res.json(users);
 });
 
+router.get("/getUserCustomer", async (req, res) => {
+   const users = await prisma.user.findMany({
+      where: {
+         role: "customer",
+      },
+   });
+
+   res.json(users);
+});
+
 router.get("/getUsersId/:id", async (req, res) => {
    const users = await prisma.user.findMany({
       where: { userID: req.params.id },

@@ -42,11 +42,12 @@ model User {
 }
 
 model Archive {
-  archieveID String  @id @default(cuid())
-  archive    Boolean
-  User       User?   @relation(fields: [userID], references: [userID])
+  archieveID String   @id @default(cuid())
+  startDate  DateTime @db.Date
+  endDate    DateTime @db.Date
+  User       User?    @relation(fields: [userID], references: [userID])
   userID     String?
-  Orders     Orders? @relation(fields: [orderID], references: [orderID])
+  Orders     Orders?  @relation(fields: [orderID], references: [orderID])
   orderID    String?
 }
 
@@ -65,6 +66,7 @@ model Profile {
 model Services {
   servicesID  String   @id @default(cuid())
   image       String
+  price       Float
   services    String
   description String
   createdAt   DateTime @default(now())

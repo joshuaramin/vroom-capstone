@@ -231,6 +231,35 @@ router.post(
    })
 );
 
+router.post(
+   "/generateReport",
+   TryCatch(async (req, res) => {
+      const { startDate, endDate, userID } = req.body;
+
+      const orders = await prisma.orders.findMany({
+         where: {
+            createdAt: {
+               lte: startDate,
+               gte: endDate,
+            },
+         },
+      });
+
+      await prisma.logs.create({
+         data: {
+            title: "Generated Report",
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+         },
+      });
+
+      return res.json(orders);
+   })
+);
+
 router.put(
    "/updateOrderStatus/:id",
    tryCatch(async (req, res) => {

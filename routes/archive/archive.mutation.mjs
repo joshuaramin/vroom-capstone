@@ -7,19 +7,11 @@ const router = express();
 router.post(
    "/createArchive",
    tryCatch(async (req, res) => {
-      const { userID, orderID } = req.body;
+      const { userID, startDate, endDate } = req.body;
       const archive = await prisma.archive.create({
          data: {
-            Orders: {
-               connect: {
-                  orderID,
-               },
-            },
-            User: {
-               connect: {
-                  userID,
-               },
-            },
+            startDate,
+            endDate,
          },
       });
 

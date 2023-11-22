@@ -41,9 +41,8 @@ router.post(
 router.patch(
    "/updateService/:id",
    TryCatch(async (req, res) => {
-      const { servicesID, description, services, userID } = req.body;
-      if (!servicesID || !description || !services)
-         throw new Error("Fields are required");
+      const { description, services, userID } = req.body;
+      if (!description || !services) throw new Error("Fields are required");
 
       const service = await prisma.services.update({
          data: {

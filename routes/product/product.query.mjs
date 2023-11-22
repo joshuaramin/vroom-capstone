@@ -42,73 +42,13 @@ router.get(
 );
 
 router.get(
-   "/getProductsByCategory/Cars Battery",
+   "/getProductsByCategory/",
    TryCatch(async () => {
-      const { take, offset, orders } = req.body;
+      const { take, offset, orders, category } = req.body;
 
       const products = await prisma.product.findMany({
          where: {
-            category: "Cars Battery",
-         },
-         take,
-         skip: offset,
-         orderBy: {
-            createdAt: orders,
-         },
-      });
-
-      return res.json(products);
-   })
-);
-
-router.get(
-   "/getProductsByCategory/Tire Mags",
-   TryCatch(async () => {
-      const { take, offset, orders } = req.body;
-
-      const products = await prisma.product.findMany({
-         where: {
-            category: "Tire Mags",
-         },
-         take,
-         skip: offset,
-         orderBy: {
-            createdAt: orders,
-         },
-      });
-
-      return res.json(products);
-   })
-);
-
-router.get(
-   "/getProductsByCategory/Oils",
-   TryCatch(async () => {
-      const { take, offset, orders } = req.body;
-
-      const products = await prisma.product.findMany({
-         where: {
-            category: "Oils",
-         },
-         take,
-         skip: offset,
-         orderBy: {
-            createdAt: orders,
-         },
-      });
-
-      return res.json(products);
-   })
-);
-
-router.get(
-   "/getProductsByCategory/Filters",
-   TryCatch(async () => {
-      const { take, offset, orders } = req.body;
-
-      const products = await prisma.product.findMany({
-         where: {
-            category: "Filters",
+            category,
          },
          take,
          skip: offset,

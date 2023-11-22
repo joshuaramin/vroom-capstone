@@ -20,7 +20,8 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Archive" (
     "archieveID" TEXT NOT NULL,
-    "archive" BOOLEAN NOT NULL,
+    "startDate" DATE NOT NULL,
+    "endDate" DATE NOT NULL,
     "userID" TEXT,
     "orderID" TEXT,
 
@@ -45,6 +46,7 @@ CREATE TABLE "Profile" (
 CREATE TABLE "Services" (
     "servicesID" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
     "services" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

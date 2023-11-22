@@ -354,6 +354,7 @@ router.patch(
                   firstname,
                   lastname,
                   phone,
+                  shipping
                },
             },
          },

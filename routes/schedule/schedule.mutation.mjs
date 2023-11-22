@@ -165,69 +165,7 @@ router.put(
             User: true,
          },
       });
-
-      if (schedule.status === "accepted") {
-         switch (schedule.time) {
-            case "9:00 AM":
-               googleCalendar(
-                  schedule.date,
-                  "01:00",
-                  "02:00",
-                  schedule.User[0].email
-               );
-               break;
-            case "10:00 AM":
-               googleCalendar(
-                  schedule.date,
-                  "02:00",
-                  "03:00",
-                  schedule.User[0].email
-               );
-               break;
-            case "11:00 AM":
-               googleCalendar(
-                  schedule.date,
-                  "03:00",
-                  "04:00",
-                  schedule.User[0].email
-               );
-               break;
-            case "1:00 PM":
-               googleCalendar(
-                  schedule.date,
-                  "05:00",
-                  "06:00",
-                  schedule.User[0].email
-               );
-               break;
-            case "2:00 PM":
-               googleCalendar(
-                  schedule.date,
-                  "06:00",
-                  "07:00",
-                  schedule.User[0].email
-               );
-               break;
-            case "3:00 PM":
-               googleCalendar(
-                  schedule.date,
-                  "07:00",
-                  "08:00",
-                  schedule.User[0].email
-               );
-               break;
-
-            case "4:00 PM":
-               googleCalendar(
-                  schedule.date,
-                  "08:00",
-                  "09:00",
-                  schedule.User[0].email
-               );
-               break;
-         }
-      }
-
+      
       await prisma.logs.create({
          data: {
             title: "Edited Appointment Details",
