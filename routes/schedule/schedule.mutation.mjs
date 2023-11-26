@@ -51,6 +51,45 @@ router.post(
 );
 
 router.post(
+   "/createManualSchedule",
+   tryCatch(async (req, res) => {
+      const { date, time, name, service } = req.body;
+
+      const dateVerified = await prisma.schedule.findMany({
+         where: {
+            date,
+         },
+      });
+
+      if (dateVerified.length >= 2)
+         throw new Error("The 2 maximum exceed to schedule this day");
+
+      const schedule = await prisma.schedule.create({
+         data: {
+            date,
+            service,
+            status: "pending",
+            time,
+            name,
+         },
+      });
+
+      await prisma.logs.create({
+         data: {
+            title: "Booked appointment",
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+         },
+      });
+
+      res.json(schedule);
+   })
+);
+
+router.post(
    "/setReminderAppointment",
    TryCatch(async (req, res) => {
       const { email } = req.body;
@@ -165,7 +204,7 @@ router.put(
             User: true,
          },
       });
-      
+
       await prisma.logs.create({
          data: {
             title: "Edited Appointment Details",

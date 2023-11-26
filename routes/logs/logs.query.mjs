@@ -4,17 +4,9 @@ import { prisma } from "../../server.mjs";
 const router = express.Router();
 
 router.get(
-   "/getMyLogs",
+   "/",
    tryCatch(async (req, res) => {
-      const { userID } = req.body;
-
-      const logs = await prisma.logs.findMany({
-         where: {
-            User: {
-               userID,
-            },
-         },
-      });
+      const logs = await prisma.logs.findMany();
 
       res.json(logs);
    })

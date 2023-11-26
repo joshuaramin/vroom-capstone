@@ -9,7 +9,7 @@ router.get(
    tryCatch(async (req, res) => {
       const archvive = await prisma.archive.findMany();
 
-      res.json(archive);
+      res.json(archvive);
    })
 );
 
@@ -28,7 +28,7 @@ router.get(
 );
 
 router.get(
-   "/getAllMyArchive/:id",
+   "/getAllArchive/:id",
    tryCatch(async (req, res) => {
       const archive = await prisma.archive.findMany({
          where: {

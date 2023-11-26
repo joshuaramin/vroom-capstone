@@ -5,14 +5,13 @@ import { prisma } from "../../server.mjs";
 const router = express.Router();
 
 router.get(
-   "/getmyorders",
+   "/getAllMyOrders/:id",
    tryCatch(async (req, res) => {
-      const { userID } = req.body;
       const orders = await prisma.orders.findMany({
          where: {
             User: {
                some: {
-                  userID,
+                  userID: req.params.id,
                },
             },
          },

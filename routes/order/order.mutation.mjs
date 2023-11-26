@@ -245,6 +245,13 @@ router.post(
          },
       });
 
+      await prisma.archive.create({
+         data: {
+            startDate,
+            endDate,
+         },
+      });
+
       await prisma.logs.create({
          data: {
             title: "Generated Report",

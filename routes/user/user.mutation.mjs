@@ -14,13 +14,7 @@ router.post(
       const { password, email, firstname, lastname, phone, shipping } =
          req.body;
 
-      if (
-         !password ||
-         !email ||
-         !firstname ||
-         !lastname ||
-         !phone || !shipping
-      )
+      if (!password || !email || !firstname || !lastname || !phone || !shipping)
          throw new Error("Field should not be empty.");
 
       const pass = await bcryptjs.hash(password, 12);
@@ -36,7 +30,7 @@ router.post(
                   firstname,
                   lastname,
                   phone: phone,
-                  shipping, 
+                  shipping,
                },
             },
          },
@@ -211,6 +205,9 @@ router.post(
 
       const users = await prisma.user.findUnique({
          where: { email },
+         include: {
+            profile: true,
+         },
       });
 
       if (!users) throw new Error("Email address not found");
@@ -231,7 +228,7 @@ router.post(
       <body style="box-sizing:  border-box; margin: 0; padding: 0;">
           <table style="width: 500px; height: auto; ">
               <tr style="height: 60px;">
-                  <td style="font-family: Poppins;">Hello ${firstname} ${lastname}</h2>
+                  <td style="font-family: Poppins;">Hello ${users.profile.firstname} ${users.profile.lastname}</h2>
                   </td>
               </tr>
               <tr style=" height: 60px;">
@@ -243,7 +240,7 @@ router.post(
                   <td>
                       <a style="text-decoration: none; background-color: #FFC300; color: black; padding:
                   15px 20px; border-radius: 5px; font-family: Poppins;"
-                          href='http://localhost:3000/forgotPassword/${users.userID}'>Change
+                          href='http://localhost:3000/auth/changePassDetails/${users.userID}'>Change
                           Password</a>
                   </td>
               </tr>
@@ -285,10 +282,20 @@ router.post(
 router.put(
    "/forgotPassword/:id",
    tryCatch(async (req, res) => {
-      const { password, retypepassword } = req.body;
+      const { password, retypepassword, olderPassword, userID } = req.body;
 
       if (password !== retypepassword)
          throw new Error("Password is mismatched");
+
+      const userForget = await prisma.user.findUnique({
+         where: {
+            userID,
+         },
+      });
+
+      const oldPass = await bcryptjs.compare(olderPassword, userForget);
+
+      if (!oldPass) throw new Error("Old Password is incorrect. Try Again");
 
       const pass = await bcryptjs.hash(password, 12);
 
@@ -344,7 +351,7 @@ router.patch(
    "/updateAccountDetails/:id",
    tryCatch(async (req, res) => {
       const pass = await bcryptjs.hash(req.body.password, 12);
-      const { email, firstname, lastname, phone } = req.body;
+      const { email, firstname, lastname, phone, shipping } = req.body;
       const users = await prisma.user.update({
          data: {
             password: pass,
@@ -354,7 +361,7 @@ router.patch(
                   firstname,
                   lastname,
                   phone,
-                  shipping
+                  shipping,
                },
             },
          },

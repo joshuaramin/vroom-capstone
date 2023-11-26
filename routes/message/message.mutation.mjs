@@ -17,7 +17,6 @@ router.post(
       const randomAdministraMessage = Math.floor(
          Math.random() * administrator.length
       );
-
       const message = await prisma.message.create({
          data: {
             message: msg,

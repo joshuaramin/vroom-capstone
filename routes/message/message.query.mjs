@@ -22,4 +22,19 @@ router.get(
    })
 );
 
+router.get(
+   "/mychats/:id",
+   tryCatch(async (req, res) => {
+      const message = await prisma.message.findMany({
+         where: {
+            receiver: {
+               userID: req.params.id,
+            },
+         },
+      });
+
+      res.json(message);
+   })
+);
+
 export default router;

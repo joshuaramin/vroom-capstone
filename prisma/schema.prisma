@@ -101,6 +101,7 @@ model Message {
 
 model Schedule {
   scheduleID String         @id @default(cuid())
+  name       String?
   date       String
   service    String[]
   status     scheduleStatus
