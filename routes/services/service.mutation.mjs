@@ -7,7 +7,7 @@ const router = express.Router();
 router.post(
    "/createServices",
    TryCatch(async (req, res) => {
-      const { services, description, userID } = req.body;
+      const { services, description, userID, price } = req.body;
 
       if (!service || !description) throw new Error("Fields are required");
       const service = await prisma.services.create({
@@ -15,6 +15,7 @@ router.post(
             image: req.file.location,
             services,
             description,
+            price,
             User: {
                connect: {
                   userID,

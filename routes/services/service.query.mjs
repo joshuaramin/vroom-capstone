@@ -13,7 +13,7 @@ router.get(
    })
 );
 
-rotuer.get(
+router.get(
    "/getAllServices/:id",
    TryCatch(async (req, res) => {
       const { servicesID } = req.body;

@@ -15,6 +15,7 @@ import Schedule from "./routes/schedule/schedule.mjs";
 import OTP from "./routes/otp/otp.mjs";
 import Logs from "./routes/logs/logs.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
+import Service from "./routes/services/services.mjs";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(Orders);
 app.use(OTP);
 app.use(Logs);
 app.use(Archive);
+app.use(Service);
 
 server.listen({ port: 3001 }, () => {
    console.log("Port is running at http://localhost:3001");

@@ -1,10 +1,10 @@
 import express from "express";
 import ServiceQuery from "./service.query.mjs";
-import ServiceMutation from "./servcie.mutation.mjs";
+import ServiceMutation from "./service.mutation.mjs";
 
-const app = express.Router();
+const router = express.Router();
 
-app.use("/services", ServiceQuery);
-app.use("/services", ServiceMutation);
+router.use("/services", ServiceQuery);
+router.use("/services", ServiceMutation);
 
-export default app;
+export default router;
