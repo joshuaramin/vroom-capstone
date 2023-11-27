@@ -15,7 +15,7 @@ import Schedule from "./routes/schedule/schedule.mjs";
 import OTP from "./routes/otp/otp.mjs";
 import Logs from "./routes/logs/logs.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
-import Service from "./routes/services/services.mjs";
+import Service from './routes/services/services.mjs'
 
 const app = express();
 

@@ -1,21 +1,24 @@
 import express from "express";
 import { prisma } from "../../server.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
+import { uploadImage } from "../../helpers/aws.mjs";
 
 const router = express.Router();
 
 router.post(
    "/createServices",
+   uploadImage.single("file"),
    TryCatch(async (req, res) => {
       const { services, description, userID, price } = req.body;
 
-      if (!service || !description) throw new Error("Fields are required");
+      if (!service || !description || !price || file)
+         throw new Error("Fields are required");
       const service = await prisma.services.create({
          data: {
             image: req.file.location,
             services,
             description,
-            price,
+            price: parseInt(price),
             User: {
                connect: {
                   userID,
@@ -35,7 +38,7 @@ router.post(
          },
       });
 
-      return res.json(service);
+      res.json(service);
    })
 );
 
@@ -67,7 +70,7 @@ router.patch(
          },
       });
 
-      return res.json(service);
+      res.json(service);
    })
 );
 
@@ -92,7 +95,7 @@ router.post(
          },
       });
 
-      return res.json(service);
+      res.json(service);
    })
 );
 
