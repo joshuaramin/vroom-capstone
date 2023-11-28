@@ -5,7 +5,7 @@ import jsonwebtoken from "jsonwebtoken";
 import tryCatch from "../../middleware/trycatch.mjs";
 import { SENDMAIL } from "../../helpers/sengrid.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
-import { RandomGenerateIdId } from "../../helpers/randomString.mjs";
+import { RandomGenerateId } from "../../helpers/randomString.mjs";
 const { sign } = jsonwebtoken;
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post(
       const users = await prisma.user.create({
          data: {
             email: email,
-            id: `#${RandomGenerateIdId(6)}`,
+            id: `#${RandomGenerateId(6)}`,
             password: pass,
             role: "admin",
             verified: true,
@@ -52,7 +52,7 @@ router.post(
 
       const users = await prisma.user.create({
          data: {
-            id: `#${RandomGenerateIdId(6)}`,
+            id: `#${RandomGenerateId(6)}`,
             email,
             password: pass,
             role: "customer",
