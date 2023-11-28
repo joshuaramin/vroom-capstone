@@ -10,18 +10,15 @@ import Archive from "./routes/archive/archive.mjs";
 import User from "./routes/user/user.mjs";
 import Product from "./routes/product/product.mjs";
 import Orders from "./routes/order/order.mjs";
-import Message from "./routes/message/message.mjs";
 import Schedule from "./routes/schedule/schedule.mjs";
 import OTP from "./routes/otp/otp.mjs";
 import Logs from "./routes/logs/logs.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
-import Service from './routes/services/services.mjs'
+import Service from "./routes/services/services.mjs";
 
 const app = express();
 
 const server = createServer(app);
-
-const io = new Server(server);
 
 dotenv.config();
 
@@ -42,7 +39,6 @@ app.use(errorHandler);
 
 app.use(User);
 app.use(Product);
-app.use(Message);
 app.use(Schedule);
 app.use(Orders);
 app.use(OTP);

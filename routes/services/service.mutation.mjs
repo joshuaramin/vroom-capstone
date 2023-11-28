@@ -11,10 +11,11 @@ router.post(
    TryCatch(async (req, res) => {
       const { services, description, userID, price } = req.body;
 
-      if (!services || !description || !price || !file)
+      if (!services || !description || !price)
          throw new Error("Fields are required");
       const service = await prisma.services.create({
          data: {
+            id: `#${RandomGenerateId(6)}`,
             image: req.file.location,
             services,
             description,

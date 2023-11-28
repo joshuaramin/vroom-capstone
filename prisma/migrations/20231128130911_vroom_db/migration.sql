@@ -7,6 +7,7 @@ CREATE TYPE "scheduleStatus" AS ENUM ('pending', 'accepted', 'rejected');
 -- CreateTable
 CREATE TABLE "User" (
     "userID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "role" NOT NULL,
@@ -20,6 +21,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Archive" (
     "archieveID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "startDate" DATE NOT NULL,
     "endDate" DATE NOT NULL,
     "userID" TEXT,
@@ -45,6 +47,7 @@ CREATE TABLE "Profile" (
 -- CreateTable
 CREATE TABLE "Services" (
     "servicesID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "services" TEXT NOT NULL,
@@ -59,7 +62,9 @@ CREATE TABLE "Services" (
 -- CreateTable
 CREATE TABLE "Product" (
     "productID" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "image" TEXT[],
+    "stock" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "descriptions" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
@@ -72,19 +77,10 @@ CREATE TABLE "Product" (
 );
 
 -- CreateTable
-CREATE TABLE "Message" (
-    "messageID" TEXT NOT NULL,
-    "message" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "senderID" TEXT,
-    "receiverID" TEXT,
-
-    CONSTRAINT "Message_pkey" PRIMARY KEY ("messageID")
-);
-
--- CreateTable
 CREATE TABLE "Schedule" (
     "scheduleID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT,
     "date" TEXT NOT NULL,
     "service" TEXT[],
     "status" "scheduleStatus" NOT NULL,
@@ -194,12 +190,6 @@ ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userID_fkey" FOREIGN KEY ("userID"
 
 -- AddForeignKey
 ALTER TABLE "Services" ADD CONSTRAINT "Services_userUserID_fkey" FOREIGN KEY ("userUserID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_senderID_fkey" FOREIGN KEY ("senderID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_receiverID_fkey" FOREIGN KEY ("receiverID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Logs" ADD CONSTRAINT "Logs_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;

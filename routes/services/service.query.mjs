@@ -16,10 +16,9 @@ router.get(
 router.get(
    "/getAllServices/:id",
    TryCatch(async (req, res) => {
-      const { servicesID } = req.body;
       const services = await prisma.services.findMany({
          where: {
-            servicesID,
+            servicesID: req.params.id,
          },
       });
 

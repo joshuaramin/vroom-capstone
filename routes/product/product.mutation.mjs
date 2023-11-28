@@ -4,10 +4,11 @@ const router = express.Router();
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
 import { uploadImage } from "../../helpers/aws.mjs";
+import { RandomGenerateId } from "../../helpers/randomString.mjs";
 
 router.post(
    "/createProduct",
-   uploadImage.array("file"),
+   uploadImage.any("file"),
    tryCatch(async (req, res) => {
       const { name, quantity, price, descriptions, category, userID } =
          req.body;
@@ -15,9 +16,15 @@ router.post(
       if ((!name || !quantity || !price || !descriptions, !category))
          throw new Error("Fields cannot be empty");
 
+      const imageArray = [];
+      req.files.map(({ location }) => {
+         imageArray.push(location);
+      });
+
       const products = await prisma.product.create({
          data: {
-            image: req.file.location,
+            image: imageArray,
+            id: `#${RandomGenerateId(6)}`,
             name,
             quantity: parseInt(quantity),
             category,

@@ -50,6 +50,7 @@ router.post(
 
       const users = await prisma.user.create({
          data: {
+            id: `#${RandomGenerateId(6)}`,
             email,
             password: pass,
             role: "customer",

@@ -66,6 +66,7 @@ router.post(
 
       const schedule = await prisma.schedule.create({
          data: {
+            id: `#${RandomGenerateId(6)}`,
             date,
             service,
             status: "pending",
