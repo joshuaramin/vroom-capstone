@@ -2,7 +2,7 @@ import express from "express";
 import { prisma } from "../../server.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
 import { uploadImage } from "../../helpers/aws.mjs";
-import { RandomGeneratedId } from "../../helpers/randomString.mjs";
+import { RandomGenerateId } from "../../helpers/randomString.mjs";
 const router = express.Router();
 
 router.post(
@@ -15,7 +15,7 @@ router.post(
          throw new Error("Fields are required");
       const service = await prisma.services.create({
          data: {
-            id: `#${RandomGeneratedId(6)}`,
+            id: `#${RandomGenerateId(6)}`,
             image: req.file.location,
             services,
             description,
