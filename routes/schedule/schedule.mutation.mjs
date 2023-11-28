@@ -1,10 +1,9 @@
 import express from "express";
 import tryCatch from "../../middleware/trycatch.mjs";
-import googleCalendar from "../../helpers/calendar.mjs";
 import { prisma } from "../../server.mjs";
 import { SENDMAIL } from "../../helpers/sengrid.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
-
+import { RandomGenerateIdId } from "../../helpers/randomString.mjs";
 const router = express.Router();
 
 router.post(
@@ -66,7 +65,7 @@ router.post(
 
       const schedule = await prisma.schedule.create({
          data: {
-            id: `#${RandomGenerateId(6)}`,
+            id: `#${RandomGenerateIdId(6)}`,
             date,
             service,
             status: "pending",

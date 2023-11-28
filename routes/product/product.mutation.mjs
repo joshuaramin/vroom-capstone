@@ -4,7 +4,7 @@ const router = express.Router();
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
 import { uploadImage } from "../../helpers/aws.mjs";
-import { RandomGenerateId } from "../../helpers/randomString.mjs";
+import { RandomGenerateIdId } from "../../helpers/randomString.mjs";
 
 router.post(
    "/createProduct",
@@ -24,7 +24,7 @@ router.post(
       const products = await prisma.product.create({
          data: {
             image: imageArray,
-            id: `#${RandomGenerateId(6)}`,
+            id: `#${RandomGenerateIdId(6)}`,
             name,
             quantity: parseInt(quantity),
             category,
