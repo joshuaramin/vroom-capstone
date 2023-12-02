@@ -7,23 +7,12 @@ const router = express();
 router.get(
    "/getAllArchive",
    tryCatch(async (req, res) => {
-      const archvive = await prisma.archive.findMany();
-
-      res.json(archvive);
-   })
-);
-
-router.get(
-   "/getAllMyArchive",
-   tryCatch(async (req, res) => {
-      const { userID } = req.body;
-      const archive = await prisma.archive.findMany({
-         where: {
-            userID,
-         },
+      const archvive = await prisma.archive.findMany({
+         take: 6,
+         skip: req.query.skip * 6,
       });
 
-      res.json(archive);
+      res.json(archvive);
    })
 );
 

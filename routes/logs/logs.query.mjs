@@ -6,7 +6,10 @@ const router = express.Router();
 router.get(
    "/",
    tryCatch(async (req, res) => {
-      const logs = await prisma.logs.findMany();
+      const logs = await prisma.logs.findMany({
+         take: 6,
+         skip: req.query.skip * 6,
+      });
 
       res.json(logs);
    })

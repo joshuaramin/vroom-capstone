@@ -25,6 +25,8 @@ router.get(
    "/",
    tryCatch(async (req, res) => {
       const orders = await prisma.orders.findMany({
+         take: 6,
+         skip: req.query.skip * 6,
          include: {
             User: true,
          },

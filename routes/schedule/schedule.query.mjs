@@ -7,7 +7,10 @@ const router = express.Router();
 router.get(
    "/",
    tryCatch(async (req, res) => {
-      const schedule = await prisma.schedule.findMany();
+      const schedule = await prisma.schedule.findMany({
+         take: 6,
+         skip: req.query.skip * 6,
+      });
 
       res.json(schedule);
    })
@@ -22,6 +25,11 @@ router.get(
                some: {
                   userID: req.params.id,
                },
+            },
+         },
+         include: {
+            User: {
+               profile: true,
             },
          },
       });

@@ -45,7 +45,7 @@ router.post(
                },
             },
             total: prod.price * quantity,
-            status: "Preparing Order",
+            status: "Pending",
          },
       });
 

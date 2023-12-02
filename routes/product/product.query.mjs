@@ -5,15 +5,13 @@ import TryCatch from "../../middleware/trycatch.mjs";
 const router = express.Router();
 
 router.get(
-   "/getAllProduct",
+   "/getAllProduct/",
    tryCatch(async (req, res) => {
-      const { take, offset, orders } = req.body;
-
       const products = await prisma.product.findMany({
-         take,
-         skip: offset,
+         take: 6,
+         skip: req.query.skip * 6,
          orderBy: {
-            createdAt: orders,
+            price: req.query.orderby,
          },
       });
 
@@ -44,16 +42,14 @@ router.get(
 router.get(
    "/getProductsByCategory/",
    TryCatch(async () => {
-      const { take, offset, orders, category } = req.body;
-
       const products = await prisma.product.findMany({
          where: {
-            category,
+            category: req.query.category,
          },
-         take,
-         skip: offset,
+         take: 6,
+         skip: req.query.skip * 6,
          orderBy: {
-            createdAt: orders,
+            price: req.query.orderby,
          },
       });
 
@@ -77,11 +73,10 @@ router.get(
 router.get(
    "/getSearchProduct",
    tryCatch(async (req, res) => {
-      const { search } = req.body;
       const products = await prisma.product.findMany({
          where: {
             name: {
-               contains: search,
+               contains: req.query.search,
             },
          },
       });

@@ -36,6 +36,9 @@ router.post(
                },
             },
          },
+         include: {
+            profile: true
+         }
       });
 
       res.json(users);

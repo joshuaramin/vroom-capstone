@@ -70,6 +70,7 @@ model Services {
   price       Float
   services    String
   description String
+  status      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   User        User?    @relation(fields: [userUserID], references: [userID])

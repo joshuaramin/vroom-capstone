@@ -7,7 +7,10 @@ const router = express.Router();
 router.get(
    "/getAllServices",
    TryCatch(async (req, res) => {
-      const services = await prisma.services.findMany();
+      const services = await prisma.services.findMany({
+         take: 3,
+         skip: req.query.skip * 3,
+      });
 
       return res.json(services);
    })

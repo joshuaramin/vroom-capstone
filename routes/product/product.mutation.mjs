@@ -10,10 +10,10 @@ router.post(
    "/createProduct",
    uploadImage.any("file"),
    tryCatch(async (req, res) => {
-      const { name, quantity, price, descriptions, category, userID } =
+      const { name, quantity, price, descriptions, category, stock, userID } =
          req.body;
 
-      if ((!name || !quantity || !price || !descriptions, !category))
+      if ((!name || !quantity || !price || !descriptions, !category || !stock))
          throw new Error("Fields cannot be empty");
 
       const imageArray = [];
@@ -26,6 +26,7 @@ router.post(
             image: imageArray,
             id: `#${RandomGenerateId(6)}`,
             name,
+            stock,
             quantity: parseInt(quantity),
             category,
             price: parseInt(price),
