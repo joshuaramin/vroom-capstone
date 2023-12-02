@@ -79,15 +79,16 @@ router.delete(
 router.patch(
    "/updateProduct/:id",
    tryCatch(async (req, res) => {
-      const { name, descriptions, quantity, price, category, userID } =
+      const { name, descriptions, quantity, price, category, stock, userID } =
          req.body;
       const products = await prisma.product.update({
          data: {
             name,
-            price,
+            price: parseInt(price),
             descriptions,
             category,
-            quantity,
+            stock,
+            quantity: parseInt(quantity),
          },
          where: {
             productID: req.params.id,

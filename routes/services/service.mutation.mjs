@@ -19,7 +19,7 @@ router.post(
             image: req.file.location,
             services,
             description,
-            
+            status,
             price: parseInt(price),
             User: {
                connect: {
