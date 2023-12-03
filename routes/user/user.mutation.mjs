@@ -352,11 +352,9 @@ router.put(
 router.patch(
    "/updateAccountDetails/:id",
    tryCatch(async (req, res) => {
-      const pass = await bcryptjs.hash(req.body.password, 12);
       const { email, firstname, lastname, phone, shipping } = req.body;
       const users = await prisma.user.update({
          data: {
-            password: pass,
             email,
             profile: {
                update: {
