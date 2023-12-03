@@ -9,7 +9,7 @@ router.post(
    "/createServices",
    uploadImage.single("file"),
    TryCatch(async (req, res) => {
-      const { services, description, userID, price } = req.body;
+      const { services, description, userID, price, status } = req.body;
 
       if (!services || !description || !price)
          throw new Error("Fields are required");
@@ -47,7 +47,7 @@ router.post(
 router.patch(
    "/updateService/:id",
    TryCatch(async (req, res) => {
-      const { description, services, userID } = req.body;
+      const { description, services, userID, status } = req.body;
       if (!description || !services) throw new Error("Fields are required");
 
       const service = await prisma.services.update({
@@ -55,6 +55,7 @@ router.patch(
             image,
             description,
             services,
+            status,
          },
          where: {
             servicesID: req.params.id,

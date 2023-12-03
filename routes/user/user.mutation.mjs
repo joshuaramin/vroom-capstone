@@ -37,8 +37,8 @@ router.post(
             },
          },
          include: {
-            profile: true
-         }
+            profile: true,
+         },
       });
 
       res.json(users);
@@ -91,8 +91,7 @@ router.post(
                   </td>
               </tr>
               <tr style=" height: 60px;">
-                  <td style="font-family: Poppins;">Your registration in Minerva Sales Corp. can be verified by
-                      entering the OTP below.
+                  <td style="font-family: Poppins;">Your registration in Minerva Sales Corp. can be verified by clicking the button down below
                   </td>
               </tr>
               <tr style=" height: 60px;">
@@ -238,8 +237,7 @@ router.post(
                   </td>
               </tr>
               <tr style=" height: 60px;">
-                  <td style="font-family: Poppins;">Your registration in Minerva Sales Corp. can be verified by
-                      entering the OTP below.
+                  <td style="font-family: Poppins;">Your password in Minerva Sales Corp. can be reset by clicking the button below. 
                   </td>
               </tr>
               <tr style=" height: 60px;">
@@ -252,9 +250,7 @@ router.post(
               </tr>
               <tr style="height: 60px;">
                   <td style="font-family: Poppins;">
-                      If you did
-                      not request
-                      verification, please ignore this email
+                  If you did not request a new password, please ignore this email.
                   </td>
               </tr>
               <tr style="height: 30px; ">
