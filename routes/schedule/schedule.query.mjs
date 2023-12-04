@@ -10,6 +10,13 @@ router.get(
       const schedule = await prisma.schedule.findMany({
          take: 6,
          skip: req.query.skip * 6,
+         include: {
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
+         },
       });
 
       res.json(schedule);
