@@ -52,7 +52,6 @@ router.patch(
 
       const service = await prisma.services.update({
          data: {
-            image,
             description,
             price,
             services,
