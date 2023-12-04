@@ -35,7 +35,6 @@ model User {
   Product   Product[]
   Services  Services[]
   Logs      Logs[]
-  Otp       OTP[]
   Orders    Orders[]
   Archive   Archive[]
 }
@@ -98,7 +97,7 @@ model Schedule {
   id         String
   name       String?
   date       String
-  service    String[]
+  service    String
   status     scheduleStatus
   time       String
   createdAt  DateTime       @default(now())
@@ -125,13 +124,4 @@ model Orders {
   Archive   Archive[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-}
-
-model OTP {
-  otpID     String   @id @default(cuid())
-  otp       String
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-  User      User?    @relation(fields: [userID], references: [userID])
-  userID    String?
 }

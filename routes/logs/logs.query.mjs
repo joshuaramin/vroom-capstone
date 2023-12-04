@@ -9,6 +9,13 @@ router.get(
       const logs = await prisma.logs.findMany({
          take: 6,
          skip: req.query.skip * 6,
+         include: {
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
+         },
       });
 
       res.json(logs);
