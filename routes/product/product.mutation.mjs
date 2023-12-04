@@ -29,7 +29,7 @@ router.post(
             stock,
             quantity: parseInt(quantity),
             category,
-            price: parseInt(price),
+            price: parseFloat(price),
             descriptions,
             User: {
                connect: {
@@ -84,7 +84,7 @@ router.patch(
       const products = await prisma.product.update({
          data: {
             name,
-            price: parseInt(price),
+            price: parseFloat(price),
             descriptions,
             category,
             stock,
