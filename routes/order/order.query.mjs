@@ -28,7 +28,11 @@ router.get(
          take: 6,
          skip: req.query.skip * 6,
          include: {
-            User: true,
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
          },
       });
       res.json(orders);
