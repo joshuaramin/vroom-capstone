@@ -15,12 +15,6 @@ enum role {
   customer
 }
 
-enum scheduleStatus {
-  pending
-  accepted
-  rejected
-}
-
 model User {
   userID    String     @id @default(cuid())
   id        String
@@ -93,15 +87,15 @@ model Product {
 }
 
 model Schedule {
-  scheduleID String         @id @default(cuid())
+  scheduleID String   @id @default(cuid())
   id         String
   name       String?
   date       String
   service    String
-  status     scheduleStatus
+  status     String
   time       String
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
   User       User[]
 }
 

@@ -51,6 +51,13 @@ router.get(
          where: {
             scheduleID: req.params.id,
          },
+         include: {
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
+         },
       });
 
       res.json(schedule);

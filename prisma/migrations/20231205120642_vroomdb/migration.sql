@@ -52,6 +52,7 @@ CREATE TABLE "Services" (
     "price" DOUBLE PRECISION NOT NULL,
     "services" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userUserID" TEXT,
@@ -82,7 +83,7 @@ CREATE TABLE "Schedule" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "date" TEXT NOT NULL,
-    "service" TEXT[],
+    "service" TEXT NOT NULL,
     "status" "scheduleStatus" NOT NULL,
     "time" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -112,17 +113,6 @@ CREATE TABLE "Orders" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Orders_pkey" PRIMARY KEY ("orderID")
-);
-
--- CreateTable
-CREATE TABLE "OTP" (
-    "otpID" TEXT NOT NULL,
-    "otp" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "expiredAt" TIMESTAMP(3) NOT NULL,
-    "userID" TEXT,
-
-    CONSTRAINT "OTP_pkey" PRIMARY KEY ("otpID")
 );
 
 -- CreateTable
@@ -193,9 +183,6 @@ ALTER TABLE "Services" ADD CONSTRAINT "Services_userUserID_fkey" FOREIGN KEY ("u
 
 -- AddForeignKey
 ALTER TABLE "Logs" ADD CONSTRAINT "Logs_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "OTP" ADD CONSTRAINT "OTP_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ProductToUser" ADD CONSTRAINT "_ProductToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Product"("productID") ON DELETE CASCADE ON UPDATE CASCADE;

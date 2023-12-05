@@ -77,7 +77,7 @@ router.patch(
    })
 );
 
-router.post(
+router.delete(
    "/deleteService/:id",
    TryCatch(async (req, res) => {
       const { userID } = req.body;
