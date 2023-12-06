@@ -22,6 +22,7 @@ router.post(
 
       const schedule = await prisma.schedule.create({
          data: {
+            id: `#${RandomGenerateId(6)}`,
             date,
             service,
             status: "pending",
@@ -52,7 +53,7 @@ router.post(
 router.post(
    "/createManualSchedule",
    tryCatch(async (req, res) => {
-      const { date, time, name, service, userID } = req.body;
+      const { date, time, name, service, status, userID } = req.body;
 
       const dateVerified = await prisma.schedule.findMany({
          where: {
@@ -68,7 +69,7 @@ router.post(
             id: `#${RandomGenerateId(6)}`,
             date,
             service,
-            status,
+            status: "Pending",
             time,
             name,
          },
