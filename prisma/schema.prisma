@@ -110,6 +110,7 @@ model Logs {
 model Orders {
   orderID   String    @id @default(cuid())
   orders    String
+  quantity  Int
   total     Float
   payment   String
   status    String
