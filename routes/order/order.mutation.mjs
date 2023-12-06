@@ -4,6 +4,7 @@ import { prisma } from "../../server.mjs";
 import { SENDMAIL } from "../../helpers/sengrid.mjs";
 import { GenerateRandomORDER } from "../../helpers/randomGenerateORDER.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
+import { RandomGenerateId } from "../../helpers/randomString.mjs";
 
 const router = express.Router();
 
@@ -247,6 +248,7 @@ router.post(
 
       await prisma.archive.create({
          data: {
+            id: `#${RandomGenerateId(6)}`,
             startDate,
             endDate,
          },
