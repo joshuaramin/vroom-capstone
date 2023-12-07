@@ -34,6 +34,8 @@ router.get(
                },
             },
          },
+         take: 6,
+         skip: req.query.skip * 6,
          include: {
             User: {
                profile: true,
