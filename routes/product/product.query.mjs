@@ -41,10 +41,13 @@ router.get(
 
 router.get(
    "/getProductsByCategory/",
-   TryCatch(async () => {
+   TryCatch(async (req ,res) => {
       const products = await prisma.product.findMany({
          where: {
-            category: req.query.category,
+            category: {
+               contains:  req.query.category,
+               mode: "insensitive"
+            },
          },
          take: 6,
          skip: req.query.skip * 6,
