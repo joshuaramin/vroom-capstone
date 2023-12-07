@@ -77,6 +77,7 @@ router.get(
          where: {
             name: {
                contains: req.query.search,
+               mode: "insensitive",
             },
          },
       });
