@@ -24,6 +24,30 @@ router.get(
 );
 
 router.get(
+   "/getGeneratedReport",
+   tryCatch(async (req, res) => {
+      const orders = await prisma.orders.findMany({
+         where: {
+            orders: {
+               lte: req.query.startDate,
+               gte: req.query.endDate,
+            },
+         },
+         include: {
+            Product: true,
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
+         },
+      });
+
+      res.json(orders);
+   })
+);
+
+router.get(
    "/",
    tryCatch(async (req, res) => {
       const orders = await prisma.orders.findMany({
