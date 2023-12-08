@@ -261,6 +261,11 @@ router.post(
             id: `#${RandomGenerateId(6)}`,
             startDate,
             endDate,
+            User: {
+               connect: {
+                  userID,
+               },
+            },
          },
       });
 
