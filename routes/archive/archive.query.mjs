@@ -28,4 +28,4 @@ router.get(
    })
 );
 
-export default express;
+export default router;
