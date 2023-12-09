@@ -1,7 +1,7 @@
 import express from "express";
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
-
+import { format } from "date-fns";
 const router = express.Router();
 
 router.get(
@@ -28,9 +28,9 @@ router.get(
    tryCatch(async (req, res) => {
       const orders = await prisma.orders.findMany({
          where: {
-            orders: {
-               lte: req.query.startDate,
-               gte: req.query.endDate,
+            createdAt: {
+               gte: format(new Date(req.query.startDate), "yyyy-MM-dd"),
+               lte: format(new Date(req.query.endDate), "yyyy-MM-dd"),
             },
          },
          include: {
