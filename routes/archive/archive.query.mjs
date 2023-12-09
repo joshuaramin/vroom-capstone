@@ -32,7 +32,11 @@ router.get(
          },
          include: {
             Orders: true,
-            User: true,
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
          },
       });
       res.json(archive);
