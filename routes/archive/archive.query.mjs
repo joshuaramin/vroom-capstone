@@ -30,6 +30,10 @@ router.get(
          where: {
             archieveID: req.params.id,
          },
+         include: {
+            Orders: true,
+            User: true,
+         },
       });
       res.json(archive);
    })
