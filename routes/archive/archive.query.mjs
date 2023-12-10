@@ -12,18 +12,14 @@ router.get(
       const { filter, skip } = req.query;
       switch (filter) {
          case "Daily":
-            const previousDay = subDays(currentDateToday, 0);
-            const Dailyarchvive = await prisma.archive.findMany({
-               take: 6,
-               skip: skip * 6,
-               include: {
-                  User: {
-                     include: {
-                        profile: true,
-                     },
-                  },
-               },
-            });
+            const Dailyarchvive = await prisma.$queryRawUnsafe(`
+            SELECT "Archive".*, "User".*, "Profile".*
+            FROM "Archive"
+            JOIN "User" ON "Archive"."userID" = "User"."userID"
+            JOIN "Profile" ON "Profile"."userID" = "User"."userID"
+            WHERE EXTRACT(DAY FROM "Archive"."createdAt") = EXTRACT(DAY FROM NOW())
+            LIMIT 6
+            OFFSET ${skip}*0`);
 
             return res.json(Dailyarchvive);
             break;
@@ -33,7 +29,9 @@ router.get(
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
-            WHERE EXTRACT(WEEK FROM "Archive"."createdAt") = EXTRACT(WEEK FROM NOW());`);
+            WHERE EXTRACT(WEEK FROM "Archive"."createdAt") = EXTRACT(WEEK FROM NOW())
+            LIMIT 6
+            OFFSET ${skip}*0`);
 
             return res.json(WeeklyArchvive);
             break;
@@ -43,7 +41,9 @@ router.get(
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
-            WHERE EXTRACT(MONTH FROM "Archive"."createdAt") = EXTRACT(MONTH FROM NOW());`);
+            WHERE EXTRACT(MONTH FROM "Archive"."createdAt") = EXTRACT(MONTH FROM NOW())
+            LIMIT 6
+            OFFSET ${skip}*0`);
 
             return res.json(MonthlyArchvive);
             break;
