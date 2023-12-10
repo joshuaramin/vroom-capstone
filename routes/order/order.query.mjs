@@ -29,8 +29,8 @@ router.get(
       const orders = await prisma.orders.findMany({
          where: {
             createdAt: {
-               gte: format(new Date(req.query.startDate), "yyyy-MM-dd"),
-               lte: format(new Date(req.query.endDate), "yyyy-MM-dd"),
+               gte: new Date(req.query.startDate),
+               lte: new Date(req.query.endDate),
             },
          },
          include: {
