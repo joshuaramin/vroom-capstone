@@ -77,6 +77,9 @@ router.get(
                         profile: true,
                      },
                   },
+                  Product: {
+                     include: true,
+                  },
                },
             },
             User: {
