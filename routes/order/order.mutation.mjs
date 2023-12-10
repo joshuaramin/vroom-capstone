@@ -250,17 +250,26 @@ router.post(
       const orders = await prisma.orders.findMany({
          where: {
             createdAt: {
-               lte: startDate,
-               gte: endDate,
+               gte: new Date(startDate),
+               lte: new Date(endDate),
             },
          },
+      });
+
+      orders.map(({ orderID }) => {
+         console.log(orderID);
       });
 
       await prisma.archive.create({
          data: {
             id: `#${RandomGenerateId(6)}`,
-            startDate,
-            endDate,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            Orders: {
+               connect: orders.map(({ orderID }) => {
+                  return { orderID: orderID };
+               }),
+            },
             User: {
                connect: {
                   userID,

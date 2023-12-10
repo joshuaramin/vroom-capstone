@@ -42,8 +42,7 @@ model Archive {
   updatedAt  DateTime @default(now())
   User       User?    @relation(fields: [userID], references: [userID])
   userID     String?
-  Orders     Orders?  @relation(fields: [orderID], references: [orderID])
-  orderID    String?
+  Orders     Orders[]
 }
 
 model Profile {

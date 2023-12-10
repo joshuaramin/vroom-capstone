@@ -9,16 +9,13 @@ const currentDateToday = new Date();
 router.get(
    "/getAllArchive",
    tryCatch(async (req, res) => {
-      const { filter } = req.query;
+      const { filter, skip } = req.query;
       switch (filter) {
          case "Daily":
             const previousDay = subDays(currentDateToday, 0);
             const Dailyarchvive = await prisma.archive.findMany({
                take: 6,
-               skip: req.query.skip * 6,
-               where: {
-                  createdAt: previousDay,
-               },
+               skip: skip * 6,
                include: {
                   User: {
                      include: {
@@ -28,59 +25,27 @@ router.get(
                },
             });
 
-            res.json(Dailyarchvive);
+            return res.json(Dailyarchvive);
             break;
          case "Weekly":
-            const previousWeekStart = subWeeks(currentDateToday, 0);
-            const previousWeekEnd = subWeeks(
-               currentDateToday,
-               currentDateToday.getDay()
-            );
-            const WeeklyArchvive = await prisma.archive.findMany({
-               take: 6,
-               skip: req.query.skip * 6,
-               where: {
-                  createdAt: {
-                     gte: previousWeekStart.toISOString(),
-                     lte: previousWeekEnd.toISOString(),
-                  },
-               },
-               include: {
-                  User: {
-                     include: {
-                        profile: true,
-                     },
-                  },
-               },
-            });
+            const WeeklyArchvive = await prisma.$queryRawUnsafe(`
+            SELECT "Archive".*, "User".*,"Profile".*
+            FROM "Archive"
+            JOIN "User" ON "Archive"."userID" = "User"."userID"
+            JOIN "Profile" ON "Profile"."userID" = "User"."userID"
+            WHERE EXTRACT(WEEK FROM "Archive"."createdAt") = EXTRACT(WEEK FROM NOW());`);
 
-            res.json(WeeklyArchvive);
+            return res.json(WeeklyArchvive);
             break;
-         case "Mothly":
-            const previousMonthStart = subMonths(currentDate, 1);
-            const previousMonthEnd = subDays(
-               currentDate,
-               currentDate.getDate()
-            );
-            const MonthlyArchvive = await prisma.archive.findMany({
-               take: 6,
-               skip: req.query.skip * 6,
-               where: {
-                  createdAt: {
-                     gte: previousMonthStart.toISOString(),
-                     lte: previousMonthEnd.toISOString(),
-                  },
-               },
-               include: {
-                  User: {
-                     include: {
-                        profile: true,
-                     },
-                  },
-               },
-            });
+         case "Monthly":
+            const MonthlyArchvive = await prisma.$queryRawUnsafe(`
+            SELECT "Archive".*, "User".*,"Profile".*
+            FROM "Archive"
+            JOIN "User" ON "Archive"."userID" = "User"."userID"
+            JOIN "Profile" ON "Profile"."userID" = "User"."userID"
+            WHERE EXTRACT(MONTH FROM "Archive"."createdAt") = EXTRACT(MONTH FROM NOW());`);
 
-            res.json(MonthlyArchvive);
+            return res.json(MonthlyArchvive);
             break;
       }
    })
@@ -89,12 +54,31 @@ router.get(
 router.get(
    "/getAllArchive/:id",
    tryCatch(async (req, res) => {
+      const archives = await prisma.archive.findUnique({
+         where: {
+            archieveID: req.params.id,
+         },
+      });
       const archive = await prisma.archive.findFirst({
          where: {
             archieveID: req.params.id,
          },
          include: {
-            Orders: true,
+            Orders: {
+               where: {
+                  createdAt: {
+                     gte: archives.startDate,
+                     lte: archives.endDate,
+                  },
+               },
+               include: {
+                  User: {
+                     include: {
+                        profile: true,
+                     },
+                  },
+               },
+            },
             User: {
                include: {
                   profile: true,
