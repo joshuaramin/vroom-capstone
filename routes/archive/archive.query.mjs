@@ -17,7 +17,6 @@ router.get(
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
-            WHERE EXTRACT(DAY FROM "Archive"."createdAt") = EXTRACT(DAY FROM NOW())
             LIMIT 6
             OFFSET ${skip}*0`);
 
